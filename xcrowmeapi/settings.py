@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,7 +37,27 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    "rest_framework_api_key",
+    'authentication',
+    'project_api_key',
+    'exchange',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+        "rest_framework_api_key.permissions.HasAPIKey",
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTTokenUserAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'authentication.pagination.CustomPagination',
+}
+
+API_KEY_CUSTOM_HEADER = "HTTP_BEARER_API_KEY"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -50,6 +70,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'xcrowmeapi.urls'
+AUTH_USER_MODEL = 'authentication.User'
 
 TEMPLATES = [
     {
@@ -123,3 +144,11 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_ROOT=os.path.join(BASE_DIR,"media")
+MEDIA_URL='/media/'
+
+# CUSTOM PROJECT KEYS
+# This value is in dollars ($50,000)
+EXCHANGE_MINIMUM = 50000
+EXCHANGE_DEALS_LIMIT = 5

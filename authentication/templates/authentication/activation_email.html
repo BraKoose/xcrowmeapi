@@ -1,0 +1,18 @@
+{% autoescape off %}
+Dear {{ user }},
+
+Welcome to Xcrowme. Please confirm your email address by clicking on the button below.
+
+CONFIRM EMAIL
+If the button doesn't work, please copy paste the following link in your browser:
+
+https://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+Cheers, The XcrowmeTeam,
+
+Akure, Nigeria
+
+Xcrowme Account | Support | Privacy Policy
+
+Copyright ©️ 2021 Xcrowme Advisory Technology, CLB8, Ondo State Industrial Park, Onyearugbulem, Akure, Nigeria.
+{% endautoescape %}
